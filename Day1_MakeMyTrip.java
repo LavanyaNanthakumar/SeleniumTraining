@@ -1,3 +1,8 @@
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -74,33 +79,43 @@ public class Day1_MakeMyTrip {
 		
 		driver.findElementByXPath("//span[contains(@class,'customSelectTitle blueText')]").click();
 		
-		driver.findElementByXPath("//li[text()='Price - Low to High']").click();
-		
-		Thread.sleep(1000);
-		
-		String bagaSuites = driver.findElement(By.xpath("(//p[@id='hlistpg_hotel_name']//span)[1]")).getText();
-		
-		System.out.println(bagaSuites);
+		driver.findElementByXPath("//ul[@class='customSelectOptions latoBold']/li[text()='Price - Low to High']").click();
 		
 		driver.manage().deleteAllCookies();
 		
-		driver.findElement(By.xpath("(//p[@id='hlistpg_hotel_name']//span)[1]")).click();
-		
-		String windowHandleBefore = driver.getWindowHandle();
-		
-		for(String handle : driver.getWindowHandles())
-		{
-			driver.switchTo().window(handle);
-		}
-		
-		driver.findElement(By.linkText("BOOK THIS NOW")).click();
-		
-		String amount = driver.findElement(By.id("revpg_total_payable_amt")).getText();
-		
-		System.out.println(amount);
-		
-		driver.close();	
-		
-	}
+		Thread.sleep(3000);
 
+		driver.findElementByXPath("//span[@id='htl_id_seo_201902170501047015']").click();
+		
+		String currenturl = driver.getCurrentUrl();
+		
+		driver.get(currenturl);
+
+		Thread.sleep(4000);
+
+		Set<String> allWindows = driver.getWindowHandles();
+		
+		List<String> allhandles = new ArrayList<String>(allWindows);
+				
+		driver.switchTo().window(allhandles.get(1));
+
+		String Hotelname = driver.findElementById("detpg_hotel_name").getText();
+
+		System.out.println(Hotelname);
+
+		driver.findElementByXPath("//button[text()='VIEW THIS COMBO']").click();
+
+		Thread.sleep(2000);
+
+		driver.findElementByXPath("//span[@class='primaryBtn overlapBtn']").click();
+
+		Thread.sleep(4000);
+
+		String Totalpayableamount = driver.findElementByXPath("//span[@id='revpg_total_payable_amt']").getText();
+
+		System.out.println(Totalpayableamount);
+
+		driver.quit();
+
+		}
 }
